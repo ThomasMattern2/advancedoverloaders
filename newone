@@ -1,0 +1,135 @@
+using namespace std;
+#include <iostream>
+
+struct Node{
+    int data;
+    Node* next;
+};
+class List{
+public:
+    List();
+    ~List();
+    void insert_to_front(int n);
+    void display() const;
+    void insert_to_back(int n);
+    void pop_front();
+    List& operator= (const List& rhs);
+    List (const List& s);
+
+private:
+    Node* head;
+};
+List::~List(){
+    delete head;
+}
+List::List(const List& s){
+    if(head == 0){
+        while(head){
+            Node* p = head;
+            head = head->next;
+            delete p;
+        }
+    }
+    *this = s;
+}
+List::List(){
+    head = 0;
+}
+List& List::operator = (const List& rhs){
+    if(&rhs != this){
+        while(head){
+            Node* p = head;
+            head = head->next;
+            delete p;
+        }
+        
+        Node* p = rhs.head;
+        while(p){  
+            Node* newnode = new Node;
+            newnode->data = p->data;
+            newnode->next = NULL;
+            if(head == 0){
+                newnode->next = head;
+                head = newnode;
+            }
+    
+            else{
+                Node* after = head->next;
+                Node* before = head;
+                while(after !=0){
+                    before=after;
+                    after = after->next;
+                
+                }
+                before->next=newnode;
+        }
+        p = p->next;
+}
+}
+    return *this;
+}
+void List::insert_to_front(int n){
+    Node* newnode;
+    newnode = new Node;
+    newnode->next= head;
+    newnode->data = n;
+    head = newnode;
+}
+void List::pop_front(){
+    Node* curr = head;
+    Node* prev = NULL;
+    Node* n;
+    while(curr != NULL){
+        n = curr->next;
+        curr->next = prev;
+        prev = curr;
+        curr = n;
+    }
+    head = prev;
+    }
+
+
+void List::insert_to_back(int n){
+    Node*  backnode;
+    backnode = new Node;
+    backnode->data = n;
+    backnode->next = NULL;
+    //if list is empty backnode will be head
+    if(head == NULL){
+        head = backnode;
+    }
+    //find last node
+    Node* last = head;
+    while(last->next != NULL){
+        last = last->next; //this loop checks for the last node as last node points to NULL
+    }
+    //insert new node to last
+    last->next = backnode;
+    
+}
+
+void List::display() const{
+    Node* currsor = head;
+    while(currsor){
+    cout<< currsor->data<< ' ';
+    currsor = currsor->next;
+    
+}
+cout<<endl;
+}
+int main() {
+    
+    List x;
+
+    x.insert_to_front(20);
+    x.insert_to_front(15);
+    x.insert_to_back(22);
+    x.insert_to_back(33);
+    x.pop_front();
+    List z;
+    z= x;
+    List y = x;
+    y.display();
+    z.display();
+    x.display();
+}
